@@ -10,7 +10,7 @@ const consulAdvertiseAddress = require('../../lib/server/consulAdvertiseAddress'
 let dataConsul,
     errConsul;
 const consulAdvertiseAddressMock = proxyquire('../../lib/server/consulAdvertiseAddress', {
-  'seal-consul': {
+  '@sealsystems/seal-consul': {
     initialize () {},
     getConfig (callback) {
       callback(errConsul, dataConsul);
