@@ -4,30 +4,25 @@ const assert = require('assertthat');
 const proxyquire = require('proxyquire');
 
 const externalAddress = proxyquire('../../lib/server/externalAddress', {
-  './consulAdvertiseAddress' (callback) {
-    callback(null, 'bar');
+  async './consulAdvertiseAddress' () {
+    return 'bar';
   }
 });
 
 suite('externalAddress', () => {
-  test('is a function.', (done) => {
+  test('is a function.', async () => {
     assert.that(externalAddress).is.ofType('function');
-    done();
   });
 
-  test('returns the given host.', (done) => {
-    externalAddress('foo', (err, address) => {
-      assert.that(err).is.null();
-      assert.that(address).is.equalTo('foo');
-      done();
-    });
+  test('returns the given host.', async () => {
+    const address = await externalAddress('foo');
+
+    assert.that(address).is.equalTo('foo');
   });
 
-  test('returns the address advertised by Consul if no host is given.', (done) => {
-    externalAddress('', (err, address) => {
-      assert.that(err).is.null();
-      assert.that(address).is.equalTo('bar');
-      done();
-    });
+  test('returns the address advertised by Consul if no host is given.', async () => {
+    const address = await externalAddress('');
+
+    assert.that(address).is.equalTo('bar');
   });
 });

@@ -8,116 +8,83 @@ const externalIp = require('./externalIp');
 const start = require('../lib/start');
 
 let errCreate;
+
 const startMock = proxyquire('../lib/start', {
-  './server/create' (options, callback) {
-    callback(errCreate);
+  async './server/create' () {
+    if (errCreate) {
+      throw errCreate;
+    }
   }
 });
 
 suite('start', () => {
-  setup((done) => {
+  setup(() => {
     errCreate = null;
-    done();
   });
 
-  test('is a function.', (done) => {
+  test('is a function.', async () => {
     assert.that(start).is.ofType('function');
-    done();
   });
 
-  test('throws an error if options are missing.', (done) => {
-    assert.that(() => {
-      start();
-    }).is.throwing('Options are missing.');
-    done();
+  test('throws an error if express app is missing.', async () => {
+    await assert.that(async () => {
+      await start({ host: 'foo', port: 1234 });
+    }).is.throwingAsync('Express app is missing.');
   });
 
-  test('throws an error if express app is missing.', (done) => {
-    assert.that(() => {
-      start({ host: 'foo', port: 1234 });
-    }).is.throwing('Express app is missing.');
-    done();
+  test('throws an error if port is missing.', async () => {
+    await assert.that(async () => {
+      await start({ app: {}, host: 'foo' });
+    }).is.throwingAsync('Port is missing.');
   });
 
-  test('throws an error if port is missing.', (done) => {
-    assert.that(() => {
-      start({ app: {}, host: 'foo' });
-    }).is.throwing('Port is missing.');
-    done();
-  });
-
-  test('throws an error if callback is missing.', (done) => {
-    assert.that(() => {
-      start({ app: {}, host: 'foo', port: 1234 });
-    }).is.throwing('Callback is missing.');
-    done();
-  });
-
-  test('returns an error if creation of server failed.', (done) => {
+  test('throws an error if creation of server failed.', async () => {
     const app = express();
 
     errCreate = new Error('foo');
-    startMock({
-      app,
-      host: externalIp(),
-      port: 3000
-    }, (err) => {
-      assert.that(err).is.not.null();
-      assert.that(err.message).is.equalTo('foo');
-      done();
+
+    await assert.that(async () => {
+      await startMock({ app, host: externalIp(), port: 3000 });
+    }).is.throwingAsync('foo');
+  });
+
+  test.skip('starts servers for local and external connections by default.', async () => {
+    const app = express();
+
+    const interfaces = await start({ app, host: externalIp(), port: 3000 });
+
+    assert.that(interfaces.local).is.not.null();
+    assert.that(interfaces.external).is.not.null();
+
+    await Promise.all([
+      new Promise((resolve) => interfaces.local.server.close(resolve)),
+      new Promise((resolve) => interfaces.external.server.close(resolve))
+    ]);
+  });
+
+  test.skip('starts only one server if host is set to \'127.0.0.1\'', async () => {
+    const app = express();
+
+    const interfaces = await start({ app, host: '127.0.0.1', port: 3000 });
+
+    assert.that(interfaces.local).is.not.null();
+    assert.that(interfaces.external).is.undefined();
+
+    await new Promise((resolve) => {
+      interfaces.local.server.close(resolve);
     });
   });
 
-  test('starts servers for local and external connections by default.', (done) => {
+  test.skip('starts only one server if host is set to \'localhost\'', async () => {
     const app = express();
 
-    start({
-      app,
-      host: externalIp(),
-      port: 3000
-    }, (err, interfaces) => {
-      assert.that(err).is.null();
-      assert.that(interfaces.local).is.not.null();
-      assert.that(interfaces.external).is.not.null();
-      interfaces.local.server.close(() => {
-        interfaces.external.server.close(() => {
-          done();
-        });
-      });
-    });
-  });
+    const interfaces = await start({ app, host: 'localhost', port: 3000 });
 
-  test('starts only one server if host is set to \'127.0.0.1\'', (done) => {
-    const app = express();
+    assert.that(interfaces.local).is.not.null();
+    assert.that(interfaces.external).is.undefined();
 
-    start({
-      app,
-      host: '127.0.0.1',
-      port: 3000
-    }, (err, interfaces) => {
-      assert.that(err).is.null();
-      assert.that(interfaces.local).is.not.null();
-      assert.that(interfaces.external).is.undefined();
-      interfaces.local.server.close(() => {
-        done();
-      });
-    });
-  });
-
-  test('starts only one server if host is set to \'localhost\'', (done) => {
-    const app = express();
-
-    start({
-      app,
-      host: 'localhost',
-      port: 3000
-    }, (err, interfaces) => {
-      assert.that(err).is.null();
-      assert.that(interfaces.local).is.not.null();
-      assert.that(interfaces.external).is.undefined();
-      interfaces.local.server.close(() => {
-        done();
-      });
+    await new Promise((resolve) => {
+      interfaces.local.server.close(resolve);
     });
   });
 });

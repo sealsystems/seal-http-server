@@ -1,20 +1,22 @@
-# seal-http-server
+# @sealsystems/http-server
 
 [![CircleCI](https://circleci.com/gh/sealsystems/seal-http-server.svg?style=svg)](https://circleci.com/gh/sealsystems/seal-http-server)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/3bxsobq24cq7jljy?svg=true)](https://ci.appveyor.com/project/Plossys/seal-http-server)
 
-seal-http-server serves an [Express](https://expressjs.com) app. It accepts local HTTP connections and HTTPS-encrypted connections from any given external interface.
+@sealsystems/http-server serves an [Express](https://expressjs.com) app. It accepts local HTTP connections and HTTPS-encrypted connections from any given external interface.
 
 ## Installation
 
-    $ npm install seal-http-server
+```shell
+$ npm install @sealsystems/http-server
+```
 
 ## Quick start
 
-First you need to add a reference to seal-http-server within your application.
+First you need to add a reference to @sealsystems/http-server within your application:
 
 ```javascript
-const httpServer = require('seal-http-server');
+const httpServer = require('@sealsystems/http-server');
 ```
 
 ### Starting the server
@@ -45,32 +47,22 @@ const options = {
 Finally, call the `start` function:
 
 ```javascript
-httpServer.start(options, (err) => {
-  if (err) {
-    return console.log('Starting the http server failed.');
-  }
+await httpServer.start(options);
 
-  console.log('Http server is listening', options);
-});
+console.log('Http server is listening', options);
 ```
 
 ### Shutting down the server
 
-Before you exit the application, you can perform a graceful shutdown. In this case, no new connection will be accepted by the server and the callback will be called after all already open connections are closed. Thus, no connection will be dropped by the server.
+Before you exit the application, you can perform a graceful shutdown. In this case, no new connection will be accepted by the server. The function returns once all already open connections are closed. Thus, no connection will be dropped by the server.
 
 To perform a graceful shutdown, call the `shutdown` function:
 
 ```javascript
-httpServer.shutdown((err) => {
-  if (err) {
-    return console.log('Shutting down the http server failed.');
-  }
+await httpServer.shutdown();
 
-  console.log('Http server is shut down.');
-});
+console.log('Http server is shut down.');
 ```
-
-The only parameter is a `callback` function. It will be called when there are no more open connections.
 
 ## Environment variables
 

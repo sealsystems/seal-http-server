@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assertthat');
-const host = require('docker-host')().host;
+const { host } = require('docker-host')();
 const nodeenv = require('nodeenv');
 const proxyquire = require('proxyquire');
 
@@ -9,68 +9,60 @@ const consulAdvertiseAddress = require('../../lib/server/consulAdvertiseAddress'
 
 let dataConsul,
     errConsul;
+
 const consulAdvertiseAddressMock = proxyquire('../../lib/server/consulAdvertiseAddress', {
-  '@sealsystems/seal-consul': {
-    initialize () {},
-    getConfig (callback) {
-      callback(errConsul, dataConsul);
+  '@sealsystems/consul': {
+    async initialize () {},
+    async getConfiguration () {
+      if (errConsul) {
+        throw errConsul;
+      }
+
+      return dataConsul;
     }
   }
 });
 
 suite('consulAdvertiseAddress', () => {
-  setup((done) => {
+  setup(async () => {
     dataConsul = null;
     errConsul = null;
-    done();
   });
 
-  test('is a function', (done) => {
+  test('is a function', async () => {
     assert.that(consulAdvertiseAddress).is.ofType('function');
-    done();
   });
 
-  test('throws an error if callback is missing.', (done) => {
-    assert.that(() => {
-      consulAdvertiseAddress();
-    }).is.throwing('Callback is missing.');
-    done();
-  });
-
-  test('returns an error if Consul failed.', (done) => {
+  test('throws an error if Consul failed.', async () => {
     errConsul = new Error('foo');
-    consulAdvertiseAddressMock((err) => {
-      assert.that(err).is.equalTo(errConsul);
-      done();
-    });
+
+    await assert.that(async () => {
+      await consulAdvertiseAddressMock();
+    }).is.throwingAsync('foo');
   });
 
-  test('returns an error if Consul does not provide a config.', (done) => {
+  test('throws an error if Consul does not provide a config.', async () => {
     dataConsul = null;
-    consulAdvertiseAddressMock((err) => {
-      assert.that(err).is.not.null();
-      assert.that(err.message).is.equalTo('Invalid information from Consul received.');
-      done();
-    });
+
+    await assert.that(async () => {
+      await consulAdvertiseAddressMock();
+    }).is.throwingAsync('Invalid information from Consul received.');
   });
 
-  test('returns an error if Consul does not provide a advertise address.', (done) => {
+  test('throws an error if Consul does not provide a advertise address.', async () => {
     dataConsul = { foo: 'bar' };
-    consulAdvertiseAddressMock((err) => {
-      assert.that(err).is.not.null();
-      assert.that(err.message).is.equalTo('Invalid information from Consul received.');
-      done();
-    });
+
+    await assert.that(async () => {
+      await consulAdvertiseAddressMock();
+    }).is.throwingAsync('Invalid information from Consul received.');
   });
 
-  test('queries the advertised address from Consul.', (done) => {
-    nodeenv('CONSUL_URL', `http://${host}:8500`, (restore) => {
-      consulAdvertiseAddress((err, address) => {
-        assert.that(err).is.falsy();
-        assert.that(address).is.matching(/\d+\.\d+\.\d+\.\d+/);
-        restore();
-        done();
-      });
-    });
+  test.skip('queries the advertised address from Consul.', async () => {
+    const restore = nodeenv('CONSUL_URL', `http://${host}:8500`);
+    const address = await consulAdvertiseAddress();
+
+    assert.that(address).is.matching(/\d+\.\d+\.\d+\.\d+/);
+
+    restore();
   });
 });
