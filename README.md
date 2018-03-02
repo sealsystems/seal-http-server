@@ -1,7 +1,8 @@
 # @sealsystems/http-server
 
-[![CircleCI](https://circleci.com/gh/sealsystems/seal-http-server.svg?style=svg)](https://circleci.com/gh/sealsystems/seal-http-server)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/3bxsobq24cq7jljy?svg=true)](https://ci.appveyor.com/project/Plossys/seal-http-server)
+[![CircleCI](https://circleci.com/gh/sealsystems/node-http-server.svg?style=svg)](https://circleci.com/gh/sealsystems/node-http-server)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/162t9chcn8ljf63j?svg=true)](https://ci.appveyor.com/project/Plossys/node-http-server)
+
 
 @sealsystems/http-server serves an [Express](https://expressjs.com) app. It accepts local HTTP connections and HTTPS-encrypted connections from any given external interface.
 
