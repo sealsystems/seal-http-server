@@ -19,6 +19,13 @@ const consulAdvertiseAddressMock = proxyquire('../../lib/server/consulAdvertiseA
       }
 
       return dataConsul;
+    },
+    async getMember () {
+      if (errConsul) {
+        throw errConsul;
+      }
+
+      return dataConsul;
     }
   }
 });
@@ -57,7 +64,7 @@ suite('consulAdvertiseAddress', () => {
     }).is.throwingAsync('Invalid information from Consul received.');
   });
 
-  test.skip('queries the advertised address from Consul.', async () => {
+  test('queries the advertised address from Consul.', async () => {
     const restore = nodeenv('CONSUL_URL', `http://${host}:8500`);
     const address = await consulAdvertiseAddress();
 
