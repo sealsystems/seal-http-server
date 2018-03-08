@@ -15,7 +15,7 @@ install:
   # Install Node.js
   - ps: Install-Product node $env:NODE_VERSION x64
   # Install Consul
-  - ps: >-
+  - ps: |
       choco install -y consul -version $env:CONSUL_VERSION
       @{
         bind_addr="127.0.0.1"
