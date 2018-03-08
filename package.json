@@ -40,5 +40,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/sealsystems/node-http-server.git"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
