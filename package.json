@@ -19,7 +19,7 @@
   },
   "main": "lib/httpServer.js",
   "dependencies": {
-    "@sealsystems/consul": "3.5.11",
+    "@sealsystems/consul": "3.5.12",
     "@sealsystems/tlscert": "2.0.0",
     "babel-register": "6.26.0",
     "lodash": "4.17.5",
