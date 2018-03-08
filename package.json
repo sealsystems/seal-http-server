@@ -39,6 +39,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/sealsystems/node-http-server.git"
+    "url": "https://github.com/sealsystems/node-http-server.git"
   }
 }
