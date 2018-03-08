@@ -1,7 +1,7 @@
 {
-  "name": "seal-http-server",
+  "name": "@sealsystems/http-server",
   "version": "2.0.10",
-  "description": "seal-http-server serves an Express app. It accepts local HTTP connections and HTTPS-encrypted connections from any given external interface.",
+  "description": "@sealsystems/http-server serves an Express app. It accepts local HTTP connections and HTTPS-encrypted connections from any given external interface.",
   "author": {
     "name": "SEAL Systems AG",
     "email": "opensource@sealsystems.de",
@@ -19,25 +19,26 @@
   },
   "main": "lib/httpServer.js",
   "dependencies": {
-    "async": "2.5.0",
-    "getenv": "0.7.0",
-    "lodash": "4.17.4",
-    "@sealsystems/seal-consul": "3.5.7",
-    "seal-log": "1.2.0",
-    "seal-tlscert": "1.2.1"
+    "@sealsystems/consul": "3.5.10",
+    "@sealsystems/tlscert": "2.0.0",
+    "babel-register": "6.26.0",
+    "lodash": "4.17.5",
+    "processenv": "1.0.0",
+    "seal-log": "1.2.0"
   },
   "devDependencies": {
-    "assertthat": "0.10.3",
+    "@sealsystems/eslint-config-es": "1.1.1",
+    "assertthat": "1.0.0",
     "docker-host": "3.1.0",
-    "eslint-config-seal": "0.0.9",
-    "express": "4.15.3",
-    "nodeenv": "0.2.1",
+    "express": "4.16.2",
+    "freeport": "1.0.5",
+    "nodeenv": "1.0.0",
     "proxyquire": "1.8.0",
-    "roboter": "0.15.3",
-    "roboter-server": "0.15.3"
+    "roboter": "0.16.0",
+    "roboter-server": "0.16.0"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/sealsystems/seal-http-server.git"
+    "url": "git://github.com/sealsystems/node-http-server.git"
   }
 }

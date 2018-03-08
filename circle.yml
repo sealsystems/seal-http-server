@@ -2,13 +2,13 @@ machine:
   timezone: Europe/Berlin
 
   environment:
-    CONSUL_VERSION: 0.7.5
+    CONSUL_VERSION: 1.0.6
 
   services:
     - docker
 
   node:
-    version: 6.11.2
+    version: 8.9.4
 
 dependencies:
   pre:
@@ -25,7 +25,6 @@ dependencies:
         },
         "server": true
       }' consul:${CONSUL_VERSION}
-
 test:
   override:
     - npm install -g roboter-cli

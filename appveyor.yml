@@ -8,16 +8,15 @@ version: "{build}"
 #   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 environment:
-  NODE_VERSION: 6.11.2
-  CONSUL_VERSION: 0.7.5
+  NODE_VERSION: 8.9.4
+  CONSUL_VERSION: 1.0.3
 
 install:
   # Install Node.js
   - ps: Install-Product node $env:NODE_VERSION x64
   # Install Consul
-  - ps: >-
-      choco install -y consul -version $env:CONSUL_VERSION
-
+  - ps: |
+      choco install -y consul -version $env:CONSUL_VERSION --no-progress
       @{
         bind_addr="127.0.0.1"
         bootstrap_expect=1
@@ -31,9 +30,7 @@ install:
         }
         server=$True
       } | ConvertTo-Json | Out-File -Filepath C:\ProgramData\consul\config\config.json -Encoding ascii
-
       restart-service consul
-
 build: off
 
 test_script:
