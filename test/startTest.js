@@ -1,7 +1,10 @@
 'use strict';
 
+const util = require('util');
+
 const assert = require('assertthat');
 const express = require('express');
+const freeport = util.promisify(require('freeport'));
 const proxyquire = require('proxyquire');
 
 const externalIp = require('./externalIp');
@@ -44,14 +47,14 @@ suite('start', () => {
     errCreate = new Error('foo');
 
     await assert.that(async () => {
-      await startMock({ app, host: externalIp(), port: 3000 });
+      await startMock({ app, host: externalIp(), port: await freeport() });
     }).is.throwingAsync('foo');
   });
 
   test.skip('starts servers for local and external connections by default.', async () => {
     const app = express();
 
-    const interfaces = await start({ app, host: externalIp(), port: 3000 });
+    const interfaces = await start({ app, host: externalIp(), port: await freeport() });
 
     assert.that(interfaces.local).is.not.null();
     assert.that(interfaces.external).is.not.null();
@@ -65,7 +68,7 @@ suite('start', () => {
   test.skip('starts only one server if host is set to \'127.0.0.1\'', async () => {
     const app = express();
 
-    const interfaces = await start({ app, host: '127.0.0.1', port: 3000 });
+    const interfaces = await start({ app, host: '127.0.0.1', port: await freeport() });
 
     assert.that(interfaces.local).is.not.null();
     assert.that(interfaces.external).is.undefined();
@@ -78,7 +81,7 @@ suite('start', () => {
   test.skip('starts only one server if host is set to \'localhost\'', async () => {
     const app = express();
 
-    const interfaces = await start({ app, host: 'localhost', port: 3000 });
+    const interfaces = await start({ app, host: 'localhost', port: await freeport() });
 
     assert.that(interfaces.local).is.not.null();
     assert.that(interfaces.external).is.undefined();
