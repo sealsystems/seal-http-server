@@ -51,13 +51,13 @@ suite('start', () => {
     }).is.throwingAsync('foo');
   });
 
-  test.skip('starts servers for local and external connections by default.', async () => {
+  test('starts servers for local and external connections by default.', async () => {
     const app = express();
 
     const interfaces = await start({ app, host: externalIp(), port: await freeport() });
 
-    assert.that(interfaces.local).is.not.null();
-    assert.that(interfaces.external).is.not.null();
+    assert.that(interfaces.local).is.not.undefined();
+    assert.that(interfaces.external).is.not.undefined();
 
     await Promise.all([
       new Promise((resolve) => interfaces.local.server.close(resolve)),
@@ -65,7 +65,7 @@ suite('start', () => {
     ]);
   });
 
-  test.skip('starts only one server if host is set to \'127.0.0.1\'', async () => {
+  test('starts only one server if host is set to \'127.0.0.1\'', async () => {
     const app = express();
 
     const interfaces = await start({ app, host: '127.0.0.1', port: await freeport() });
@@ -78,7 +78,7 @@ suite('start', () => {
     });
   });
 
-  test.skip('starts only one server if host is set to \'localhost\'', async () => {
+  test('starts only one server if host is set to \'localhost\'', async () => {
     const app = express();
 
     const interfaces = await start({ app, host: 'localhost', port: await freeport() });
