@@ -19,7 +19,7 @@
   },
   "main": "lib/httpServer.js",
   "dependencies": {
-    "@sealsystems/consul": "3.5.10",
+    "@sealsystems/consul": "3.5.11",
     "@sealsystems/tlscert": "2.0.0",
     "babel-register": "6.26.0",
     "lodash": "4.17.5",
@@ -33,7 +33,7 @@
     "express": "4.16.2",
     "freeport": "1.0.5",
     "nodeenv": "1.0.0",
-    "proxyquire": "1.8.0",
+    "proxyquire": "2.0.0",
     "roboter": "0.16.0",
     "roboter-server": "0.16.0"
   },
