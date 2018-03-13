@@ -21,7 +21,7 @@
   "dependencies": {
     "@sealsystems/consul": "3.5.12",
     "@sealsystems/log": "1.2.4",
-    "@sealsystems/tlscert": "2.0.0",
+    "@sealsystems/tlscert": "2.0.1",
     "lodash": "4.17.5",
     "processenv": "1.0.0"
   },
