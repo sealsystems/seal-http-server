@@ -20,17 +20,16 @@
   "main": "lib/httpServer.js",
   "dependencies": {
     "@sealsystems/consul": "3.5.12",
+    "@sealsystems/log": "1.2.4",
     "@sealsystems/tlscert": "2.0.0",
-    "babel-register": "6.26.0",
     "lodash": "4.17.5",
-    "processenv": "1.0.0",
-    "seal-log": "1.2.0"
+    "processenv": "1.0.0"
   },
   "devDependencies": {
     "@sealsystems/eslint-config-es": "1.1.1",
     "assertthat": "1.0.0",
     "docker-host": "3.1.0",
-    "express": "4.16.2",
+    "express": "4.16.3",
     "freeport": "1.0.5",
     "nodeenv": "1.0.0",
     "proxyquire": "2.0.0",
