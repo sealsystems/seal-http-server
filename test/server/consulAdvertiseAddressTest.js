@@ -64,13 +64,13 @@ suite('consulAdvertiseAddress', () => {
   });
 
   test('queries the advertised address from Consul.', (done) => {
-    nodeenv('CONSUL_URL', `http://${host}:8500`, (restore) => {
-      consulAdvertiseAddress((err, address) => {
-        assert.that(err).is.falsy();
-        assert.that(address).is.matching(/\d+\.\d+\.\d+\.\d+/);
-        restore();
-        done();
-      });
+    const restore = nodeenv('CONSUL_URL', `http://${host}:8500`);
+
+    consulAdvertiseAddress((err, address) => {
+      assert.that(err).is.falsy();
+      assert.that(address).is.matching(/\d+\.\d+\.\d+\.\d+/);
+      restore();
+      done();
     });
   });
 });

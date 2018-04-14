@@ -47,17 +47,16 @@ suite('create', () => {
 
   test('returns an error if TLS_UNPROTECTED is invalid.', (done) => {
     const app = express();
+    const restore = nodeenv('TLS_UNPROTECTED', 'foo');
 
-    nodeenv('TLS_UNPROTECTED', 'foo', (restore) => {
-      create({
-        app,
-        port: 3000
-      }, (err) => {
-        assert.that(err).is.not.null();
-        assert.that(err.message).is.equalTo('TLS_UNPROTECTED invalid.');
-        restore();
-        done();
-      });
+    create({
+      app,
+      port: 3000
+    }, (err) => {
+      assert.that(err).is.not.null();
+      assert.that(err.message).is.equalTo('TLS_UNPROTECTED invalid.');
+      restore();
+      done();
     });
   });
 
@@ -77,22 +76,21 @@ suite('create', () => {
 
   test('creates only http servers if TLS_UNPROTECTED=world.', (done) => {
     const app = express();
+    const restore = nodeenv('TLS_UNPROTECTED', 'world');
 
-    nodeenv('TLS_UNPROTECTED', 'world', (restore) => {
-      create({
-        app,
-        port: 3000
-      }, (err, interfaces) => {
-        assert.that(err).is.null();
-        assert.that(interfaces.local).is.not.null();
-        assert.that(interfaces.local.server).is.instanceOf(http.Server);
-        assert.that(interfaces.external).is.not.null();
-        assert.that(interfaces.external.server).is.instanceOf(http.Server);
-        interfaces.local.server.close(() => {
-          interfaces.external.server.close(() => {
-            restore();
-            done();
-          });
+    create({
+      app,
+      port: 3000
+    }, (err, interfaces) => {
+      assert.that(err).is.null();
+      assert.that(interfaces.local).is.not.null();
+      assert.that(interfaces.local.server).is.instanceOf(http.Server);
+      assert.that(interfaces.external).is.not.null();
+      assert.that(interfaces.external.server).is.instanceOf(http.Server);
+      interfaces.local.server.close(() => {
+        interfaces.external.server.close(() => {
+          restore();
+          done();
         });
       });
     });
@@ -100,22 +98,21 @@ suite('create', () => {
 
   test('creates https and http servers if TLS_UNPROTECTED=loopback.', (done) => {
     const app = express();
+    const restore = nodeenv('TLS_UNPROTECTED', 'loopback');
 
-    nodeenv('TLS_UNPROTECTED', 'loopback', (restore) => {
-      create({
-        app,
-        port: 3000
-      }, (err, interfaces) => {
-        assert.that(err).is.null();
-        assert.that(interfaces.local).is.not.null();
-        assert.that(interfaces.local.server).is.instanceOf(http.Server);
-        assert.that(interfaces.external).is.not.null();
-        assert.that(interfaces.external.server).is.instanceOf(https.Server);
-        interfaces.local.server.close(() => {
-          interfaces.external.server.close(() => {
-            restore();
-            done();
-          });
+    create({
+      app,
+      port: 3000
+    }, (err, interfaces) => {
+      assert.that(err).is.null();
+      assert.that(interfaces.local).is.not.null();
+      assert.that(interfaces.local.server).is.instanceOf(http.Server);
+      assert.that(interfaces.external).is.not.null();
+      assert.that(interfaces.external.server).is.instanceOf(https.Server);
+      interfaces.local.server.close(() => {
+        interfaces.external.server.close(() => {
+          restore();
+          done();
         });
       });
     });
@@ -123,22 +120,21 @@ suite('create', () => {
 
   test('creates only https servers if TLS_UNPROTECTED=none.', (done) => {
     const app = express();
+    const restore = nodeenv('TLS_UNPROTECTED', 'none');
 
-    nodeenv('TLS_UNPROTECTED', 'none', (restore) => {
-      create({
-        app,
-        port: 3000
-      }, (err, interfaces) => {
-        assert.that(err).is.null();
-        assert.that(interfaces.local).is.not.null();
-        assert.that(interfaces.local.server).is.instanceOf(https.Server);
-        assert.that(interfaces.external).is.not.null();
-        assert.that(interfaces.external.server).is.instanceOf(https.Server);
-        interfaces.local.server.close(() => {
-          interfaces.external.server.close(() => {
-            restore();
-            done();
-          });
+    create({
+      app,
+      port: 3000
+    }, (err, interfaces) => {
+      assert.that(err).is.null();
+      assert.that(interfaces.local).is.not.null();
+      assert.that(interfaces.local.server).is.instanceOf(https.Server);
+      assert.that(interfaces.external).is.not.null();
+      assert.that(interfaces.external.server).is.instanceOf(https.Server);
+      interfaces.local.server.close(() => {
+        interfaces.external.server.close(() => {
+          restore();
+          done();
         });
       });
     });
