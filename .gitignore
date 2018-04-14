@@ -15,3 +15,5 @@ coverage/
 
 # OS X generated files and folders
 .DS_Store
+
+package-lock.json
