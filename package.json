@@ -10,11 +10,11 @@
   "license": "MIT",
   "scripts": {
     "bot": "bot",
-    "release": "bot release && npm publish",
-    "release-minor": "bot release --type minor && npm publish",
-    "release-major": "bot release --type major && npm publish",
-    "test": "bot test-units",
-    "coverage": "istanbul cover _mocha -- --recursive --ui tdd ",
+    "release": "npm run bot release && npm publish",
+    "release-minor": "npm run bot release --type minor && npm publish",
+    "release-major": "npm run bot release --type major && npm publish",
+    "test": "npm run bot test-units",
+    "coverage": "nyc --reporter=text --reporter=lcov mocha",
     "report": "npm run coverage && if [[ $OSTYPE == darwin* ]]; then open=open; else open=xdg-open; fi && $open coverage/lcov-report/index.html"
   },
   "main": "lib/httpServer.js",
@@ -32,6 +32,7 @@
     "express": "4.16.3",
     "freeport": "1.0.5",
     "nodeenv": "1.0.0",
+    "nyc": "12.0.2",
     "proxyquire": "2.0.0",
     "roboter": "0.16.0",
     "roboter-server": "0.16.0"
