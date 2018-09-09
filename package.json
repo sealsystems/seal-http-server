@@ -20,7 +20,7 @@
     "async": "2.5.0",
     "getenv": "0.7.0",
     "lodash": "4.17.4",
-    "@sealsystems/seal-consul": "3.5.7",
+    "@sealsystems/seal-consul": "3.5.17",
     "seal-log": "1.2.0",
     "seal-tlscert": "1.2.1"
   },
