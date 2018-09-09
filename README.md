@@ -1,5 +1,7 @@
 # @sealsystems/http-server
 
+test
+
 [![CircleCI](https://circleci.com/gh/sealsystems/node-http-server.svg?style=svg)](https://circleci.com/gh/sealsystems/node-http-server)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/162t9chcn8ljf63j?svg=true)](https://ci.appveyor.com/project/Plossys/node-http-server)
 
