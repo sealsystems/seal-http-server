@@ -1,5 +1,5 @@
 {
-  "name": "seal-http-server",
+  "name": "@sealsystems/http-server",
   "version": "2.1.0",
   "description": "seal-http-server serves an Express app. It accepts local HTTP connections and HTTPS-encrypted connections from any given external interface.",
   "author": {
