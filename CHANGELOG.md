@@ -1,3 +1,14 @@
+## 2.1.3 (2018-09-09)
+
+### Bug Fixes
+
+
+#### Deploy in [@sealssystems](https://github.com/sealssystems) org ([fdcf7b3](https://github.com/sealsystems/node-http-server/commit/fdcf7b3))
+
+
+
+---
+
 ## 2.1.2 (2018-09-09)
 
 ### Bug Fixes
