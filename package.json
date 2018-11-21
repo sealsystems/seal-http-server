@@ -1,7 +1,7 @@
 {
-  "name": "seal-http-server-cl",
-  "version": "2.1.0",
-  "description": "seal-http-server serves an Express app. It accepts local HTTP connections and HTTPS-encrypted connections from any given external interface.",
+  "name": "@sealsystems/http-server",
+  "version": "3.1.0",
+  "description": "@sealsystems/http-server serves an Express app. It accepts local HTTP connections and HTTPS-encrypted connections from any given external interface.",
   "author": {
     "name": "SEAL Systems AG",
     "email": "opensource@sealsystems.de",
@@ -10,34 +10,39 @@
   "license": "MIT",
   "scripts": {
     "bot": "bot",
-    "release": "bot release && npm publish",
-    "release-minor": "bot release --type minor && npm publish",
-    "release-major": "bot release --type major && npm publish",
-    "test": "bot test-units",
-    "coverage": "istanbul cover _mocha -- --recursive --ui tdd ",
+    "release": "semantic-release --branch ${CIRCLE_BRANCH}",
+    "test": "npm run bot test-units",
+    "coverage": "nyc --reporter=text --reporter=lcov mocha",
     "report": "npm run coverage && if [[ $OSTYPE == darwin* ]]; then open=open; else open=xdg-open; fi && $open coverage/lcov-report/index.html"
   },
   "main": "lib/httpServer.js",
   "dependencies": {
-    "async": "2.5.0",
+    "@sealsystems/consul": "3.5.12",
+    "@sealsystems/log": "1.2.4",
+    "@sealsystems/tlscert": "2.0.1",
     "getenv": "0.7.0",
-    "lodash": "4.17.4",
-    "@sealsystems/seal-consul": "3.5.7",
-    "seal-log": "1.2.0",
-    "seal-tlscert": "1.2.1"
+    "lodash": "4.17.5"
   },
   "devDependencies": {
-    "assertthat": "0.10.3",
+    "@sealsystems/eslint-config-es": "1.1.1",
+    "assertthat": "1.0.0",
     "docker-host": "3.1.0",
-    "eslint-config-seal": "0.0.9",
-    "express": "4.15.3",
+    "express": "4.16.3",
+    "freeport": "1.0.5",
     "nodeenv": "1.0.0",
-    "proxyquire": "1.8.0",
-    "roboter": "0.15.3",
-    "roboter-server": "0.15.3"
+    "nyc": "12.0.2",
+    "proxyquire": "2.0.0",
+    "roboter": "0.16.0",
+    "roboter-server": "0.16.0"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/sealsystems/seal-http-server.git"
+    "url": "https://github.com/sealsystems/node-http-server.git"
+  },
+  "release": {
+    "extends": "@sealsystems/semantic-release-config/node-module"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

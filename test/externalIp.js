@@ -2,14 +2,15 @@
 
 const os = require('os');
 
-const _ = require('lodash');
+const flatten = require('lodash/flatten');
+const values = require('lodash/values');
 
 const externalIp = function () {
   const nics = os.networkInterfaces();
 
-  return _.flatten(_.values(nics)).find((address) => {
-    return (address.family === 'IPv4' && address.internal === false);
-  }).address;
+  return flatten(values(nics)).find(
+    (address) => address.family === 'IPv4' && !address.internal
+  ).address;
 };
 
 module.exports = externalIp;

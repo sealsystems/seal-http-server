@@ -3,59 +3,54 @@
 const assert = require('assertthat');
 const proxyquire = require('proxyquire');
 
-const tlscert = require('seal-tlscert');
+const tlscert = require('@sealsystems/tlscert');
 
 const tlsOptions = require('../../lib/server/tlsOptions');
 
 const tlsOptionsMockNoCA = proxyquire('../../lib/server/tlsOptions', {
-  'seal-tlscert': {
-    get () {
+  '@sealsystems/tlscert': {
+    async get () {
       return {};
     }
   }
 });
 const tlsOptionsMockWithCA = proxyquire('../../lib/server/tlsOptions', {
-  'seal-tlscert': {
-    get () {
+  '@sealsystems/tlscert': {
+    async get () {
       return { ca: 'foo' };
     }
   }
 });
 
 suite('tlsOptions', () => {
-  test('is a function.', (done) => {
+  test('is a function.', async () => {
     assert.that(tlsOptions).is.ofType('function');
-    done();
   });
 
-  test('returns the keystore.', (done) => {
-    const keystore = tlscert.get();
-    const options = tlsOptions();
+  test('returns the keystore.', async () => {
+    const keystore = await tlscert.get();
+    const options = await tlsOptions();
 
     assert.that(options.cert).is.equalTo(keystore.cert);
     assert.that(options.key).is.equalTo(keystore.key);
     assert.that(options.ca).is.equalTo(keystore.ca);
-    done();
   });
 
-  test('does not return tls ciphers by default.', (done) => {
-    assert.that(tlsOptions().ciphers).is.equalTo('');
-    done();
+  test('does not return tls ciphers by default.', async () => {
+    assert.that((await tlsOptions()).ciphers).is.equalTo('');
   });
 
-  test('does not set CA related options by default.', (done) => {
-    const actual = tlsOptionsMockNoCA();
+  test('does not set CA related options by default.', async () => {
+    const actual = await tlsOptionsMockNoCA();
 
     assert.that(actual.rejectUnauthorized).is.undefined();
     assert.that(actual.requestCert).is.undefined();
-    done();
   });
 
-  test('does set CA related options by default if CA is provided.', (done) => {
-    const actual = tlsOptionsMockWithCA();
+  test('does set CA related options by default if CA is provided.', async () => {
+    const actual = await tlsOptionsMockWithCA();
 
     assert.that(actual.rejectUnauthorized).is.true();
     assert.that(actual.requestCert).is.true();
-    done();
   });
 });

@@ -7,16 +7,24 @@ const servers = {
   external: 'foo',
   local: 'bar'
 };
+
 let errShutdown,
     errStart;
 
 const httpServer = proxyquire('../lib/httpServer', {
-  './shutdown' (runningServers, callback) {
+  async './shutdown' (runningServers) {
     assert.that(runningServers).is.equalTo(servers);
-    callback(errShutdown);
+
+    if (errShutdown) {
+      throw errShutdown;
+    }
   },
-  './start' (options, callback) {
-    callback(errStart, servers);
+  async './start' () {
+    if (errStart) {
+      throw errStart;
+    }
+
+    return servers;
   }
 });
 
@@ -26,75 +34,53 @@ suite('httpServer', () => {
     errStart = null;
   });
 
-  test('is an object.', (done) => {
+  test('is an object.', async () => {
     assert.that(httpServer).is.ofType('object');
-    done();
   });
 
   suite('start', () => {
-    test('is a function.', (done) => {
+    test('is a function.', async () => {
       assert.that(httpServer.start).is.ofType('function');
-      done();
     });
 
-    test('throws an error if options are misssing.', (done) => {
-      assert.that(() => {
-        httpServer.start();
-      }).is.throwing('Options are missing.');
-      done();
+    test('throws an error if options are misssing.', async () => {
+      await assert.that(async () => {
+        await httpServer.start();
+      }).is.throwingAsync('Options are missing.');
     });
 
-    test('throws an error if callback is misssing.', (done) => {
-      assert.that(() => {
-        httpServer.start({});
-      }).is.throwing('Callback is missing.');
-      done();
+    test('does not throw an error.', async () => {
+      await assert.that(async () => {
+        await httpServer.start({});
+      }).is.not.throwingAsync();
     });
 
-    test('calls the callback.', (done) => {
-      httpServer.start({}, (err) => {
-        assert.that(err).is.falsy();
-        done();
-      });
-    });
-
-    test('returns an error if starting the servers failed.', (done) => {
+    test('throws an error if starting the servers failed.', async () => {
       errStart = new Error('foo');
-      httpServer.start({}, (err) => {
-        assert.that(err).is.not.falsy();
-        assert.that(err.message).is.equalTo('foo');
-        done();
-      });
+
+      await assert.that(async () => {
+        await httpServer.start({});
+      }).is.throwingAsync('foo');
     });
   });
 
   suite('shutdown', () => {
-    test('is a function.', (done) => {
+    test('is a function.', async () => {
       assert.that(httpServer.shutdown).is.ofType('function');
-      done();
     });
 
-    test('throws an error if callback is misssing.', (done) => {
-      assert.that(() => {
-        httpServer.shutdown();
-      }).is.throwing('Callback is missing.');
-      done();
+    test('does not throw an error.', async () => {
+      await assert.that(async () => {
+        await httpServer.shutdown({});
+      }).is.not.throwingAsync();
     });
 
-    test('calls the callback.', (done) => {
-      httpServer.shutdown((err) => {
-        assert.that(err).is.falsy();
-        done();
-      });
-    });
-
-    test('returns an error if shutting down the servers failed.', (done) => {
+    test('returns an error if shutting down the servers failed.', async () => {
       errShutdown = new Error('foo');
-      httpServer.shutdown((err) => {
-        assert.that(err).is.not.falsy();
-        assert.that(err.message).is.equalTo('foo');
-        done();
-      });
+
+      await assert.that(async () => {
+        await httpServer.shutdown({});
+      }).is.throwingAsync('foo');
     });
   });
 });

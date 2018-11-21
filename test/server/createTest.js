@@ -5,174 +5,154 @@ const https = require('https');
 
 const assert = require('assertthat');
 const express = require('express');
-const externalIp = require('../externalIp');
 const nodeenv = require('nodeenv');
 const proxyquire = require('proxyquire');
 
+const externalIp = require('../externalIp');
+
 let errExternalAddress;
+
 const create = proxyquire('../../lib/server/create', {
-  './externalAddress' (host, callback) {
-    if (host) {
-      return callback(errExternalAddress, host);
+  async './externalAddress' (host) {
+    if (errExternalAddress) {
+      throw errExternalAddress;
     }
 
-    callback(errExternalAddress, externalIp());
+    if (host) {
+      return host;
+    }
+
+    return externalIp();
   }
 });
 
 suite('create', () => {
-  setup((done) => {
+  setup(async () => {
     errExternalAddress = null;
-    done();
   });
 
-  test('is a function.', (done) => {
+  test('is a function.', async () => {
     assert.that(create).is.ofType('function');
-    done();
   });
 
-  test('throws an error if options are missing.', (done) => {
-    assert.that(() => {
-      create();
-    }).is.throwing('Options are missing.');
-    done();
+  test('throws an error if options are missing.', async () => {
+    await assert.that(async () => {
+      await create();
+    }).is.throwingAsync('Options are missing.');
   });
 
-  test('throws an error if express app is missing.', (done) => {
-    assert.that(() => {
-      create({ host: 'foo' });
-    }).is.throwing('Express app is missing.');
-    done();
+  test('throws an error if express app is missing.', async () => {
+    await assert.that(async () => {
+      await create({ host: 'foo' });
+    }).is.throwingAsync('Express app is missing.');
   });
 
-  test('returns an error if TLS_UNPROTECTED is invalid.', (done) => {
-    const app = express();
+  test('throws an error if TLS_UNPROTECTED is invalid.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'foo');
-
-    create({
-      app,
-      port: 3000
-    }, (err) => {
-      assert.that(err).is.not.null();
-      assert.that(err.message).is.equalTo('TLS_UNPROTECTED invalid.');
-      restore();
-      done();
-    });
-  });
-
-  test('returns an error if getting the external address failed.', (done) => {
     const app = express();
 
+    await assert.that(async () => {
+      await create({ app, port: 3000 });
+    }).is.throwingAsync('TLS_UNPROTECTED invalid.');
+
+    restore();
+  });
+
+  test('throws an error if getting the external address failed.', async () => {
     errExternalAddress = new Error('foo');
-    create({
-      app,
-      port: 3000
-    }, (err) => {
-      assert.that(err).is.not.null();
-      assert.that(err.message).is.equalTo('foo');
-      done();
-    });
+
+    const app = express();
+
+    await assert.that(async () => {
+      await create({ app, port: 3000 });
+    }).is.throwingAsync('foo');
   });
 
-  test('creates only http servers if TLS_UNPROTECTED=world.', (done) => {
-    const app = express();
+  test('creates only http servers if TLS_UNPROTECTED=world.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'world');
+    const app = express();
+    const interfaces = await create({ app, port: 3000 });
 
-    create({
-      app,
-      port: 3000
-    }, (err, interfaces) => {
-      assert.that(err).is.null();
-      assert.that(interfaces.local).is.not.null();
-      assert.that(interfaces.local.server).is.instanceOf(http.Server);
-      assert.that(interfaces.external).is.not.null();
-      assert.that(interfaces.external.server).is.instanceOf(http.Server);
-      interfaces.local.server.close(() => {
-        interfaces.external.server.close(() => {
-          restore();
-          done();
-        });
-      });
-    });
+    assert.that(interfaces.local).is.not.null();
+    assert.that(interfaces.local.server).is.instanceOf(http.Server);
+    assert.that(interfaces.external).is.not.null();
+    assert.that(interfaces.external.server).is.instanceOf(http.Server);
+
+    await Promise.all([
+      new Promise((resolve) => interfaces.local.server.close(resolve)),
+      new Promise((resolve) => interfaces.external.server.close(resolve))
+    ]);
+
+    restore();
   });
 
-  test('creates https and http servers if TLS_UNPROTECTED=loopback.', (done) => {
-    const app = express();
+  test('creates https and http servers if TLS_UNPROTECTED=loopback.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'loopback');
+    const app = express();
+    const interfaces = await create({ app, port: 3000 });
 
-    create({
-      app,
-      port: 3000
-    }, (err, interfaces) => {
-      assert.that(err).is.null();
-      assert.that(interfaces.local).is.not.null();
-      assert.that(interfaces.local.server).is.instanceOf(http.Server);
-      assert.that(interfaces.external).is.not.null();
-      assert.that(interfaces.external.server).is.instanceOf(https.Server);
-      interfaces.local.server.close(() => {
-        interfaces.external.server.close(() => {
-          restore();
-          done();
-        });
-      });
-    });
+    assert.that(interfaces.local).is.not.null();
+    assert.that(interfaces.local.server).is.instanceOf(http.Server);
+    assert.that(interfaces.external).is.not.null();
+    assert.that(interfaces.external.server).is.instanceOf(https.Server);
+
+    await Promise.all([
+      new Promise((resolve) => interfaces.local.server.close(resolve)),
+      new Promise((resolve) => interfaces.external.server.close(resolve))
+    ]);
+
+    restore();
   });
 
-  test('creates only https servers if TLS_UNPROTECTED=none.', (done) => {
-    const app = express();
+  test('creates only https servers if TLS_UNPROTECTED=none.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'none');
+    const app = express();
+    const interfaces = await create({ app, port: 3000 });
 
-    create({
-      app,
-      port: 3000
-    }, (err, interfaces) => {
-      assert.that(err).is.null();
-      assert.that(interfaces.local).is.not.null();
-      assert.that(interfaces.local.server).is.instanceOf(https.Server);
-      assert.that(interfaces.external).is.not.null();
-      assert.that(interfaces.external.server).is.instanceOf(https.Server);
-      interfaces.local.server.close(() => {
-        interfaces.external.server.close(() => {
-          restore();
-          done();
-        });
-      });
-    });
+    assert.that(interfaces.local).is.not.null();
+    assert.that(interfaces.local.server).is.instanceOf(https.Server);
+    assert.that(interfaces.external).is.not.null();
+    assert.that(interfaces.external.server).is.instanceOf(https.Server);
+
+    await Promise.all([
+      new Promise((resolve) => interfaces.local.server.close(resolve)),
+      new Promise((resolve) => interfaces.external.server.close(resolve))
+    ]);
+
+    restore();
   });
 
-  test('creates only one server if host is set to \'127.0.0.1\'', (done) => {
+  test('creates only one server if host is set to \'127.0.0.1\'', async () => {
     const app = express();
-
-    create({
+    const interfaces = await create({
       app,
       host: '127.0.0.1',
       port: 3000
-    }, (err, interfaces) => {
-      assert.that(err).is.null();
-      assert.that(interfaces.local).is.not.null();
-      assert.that(interfaces.local.server).is.not.null();
-      assert.that(interfaces.external).is.undefined();
-      interfaces.local.server.close(() => {
-        done();
-      });
+    });
+
+    assert.that(interfaces.local).is.not.null();
+    assert.that(interfaces.local.server).is.not.falsy();
+    assert.that(interfaces.external).is.undefined();
+
+    await new Promise((resolve) => {
+      interfaces.local.server.close(resolve);
     });
   });
 
-  test('creates only one server if host is set to \'localhost\'', (done) => {
+  test('creates only one server if host is set to \'localhost\'', async () => {
     const app = express();
-
-    create({
+    const interfaces = await create({
       app,
       host: 'localhost',
       port: 3000
-    }, (err, interfaces) => {
-      assert.that(err).is.null();
-      assert.that(interfaces.local).is.not.null();
-      assert.that(interfaces.local.server).is.not.null();
-      assert.that(interfaces.external).is.undefined();
-      interfaces.local.server.close(() => {
-        done();
-      });
+    });
+
+    assert.that(interfaces.local).is.not.falsy();
+    assert.that(interfaces.local.server).is.not.falsy();
+    assert.that(interfaces.external).is.undefined();
+
+    await new Promise((resolve) => {
+      interfaces.local.server.close(resolve);
     });
   });
 });
