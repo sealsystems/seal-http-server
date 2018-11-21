@@ -83,6 +83,8 @@ For connections via HTTPS you can define the set of allowed ciphers by setting t
 
   Local and external connections are served via HTTP. **This is insecure!**
 
+`SERVICE_DISCOVERY=cloud` and `TLS_UNPROTECTED=world` together uses one HTTP server for all network interfaces. This is used in cloud scenarios where we have a secure internal network.
+
 ## Technical details
 
 In order to handle traffic coming through the local and the given external interface(s), two server objects will be created: One binds to the local interface, the other one binds to the given external interface(s). Both servers use the same port. This also allows e.g. to use HTTP locally but to encrypt external connections via HTTPS.

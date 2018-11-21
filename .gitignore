@@ -13,3 +13,5 @@ coverage/
 
 # MacOS
 .DS_Store
+
+package-lock.json

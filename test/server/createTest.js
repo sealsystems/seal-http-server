@@ -70,9 +70,7 @@ suite('create', () => {
 
   test('creates only http servers if TLS_UNPROTECTED=world.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'world');
-
     const app = express();
-
     const interfaces = await create({ app, port: 3000 });
 
     assert.that(interfaces.local).is.not.null();
@@ -90,9 +88,7 @@ suite('create', () => {
 
   test('creates https and http servers if TLS_UNPROTECTED=loopback.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'loopback');
-
     const app = express();
-
     const interfaces = await create({ app, port: 3000 });
 
     assert.that(interfaces.local).is.not.null();
@@ -110,9 +106,7 @@ suite('create', () => {
 
   test('creates only https servers if TLS_UNPROTECTED=none.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'none');
-
     const app = express();
-
     const interfaces = await create({ app, port: 3000 });
 
     assert.that(interfaces.local).is.not.null();
@@ -130,7 +124,6 @@ suite('create', () => {
 
   test('creates only one server if host is set to \'127.0.0.1\'', async () => {
     const app = express();
-
     const interfaces = await create({
       app,
       host: '127.0.0.1',
@@ -138,7 +131,7 @@ suite('create', () => {
     });
 
     assert.that(interfaces.local).is.not.null();
-    assert.that(interfaces.local.server).is.not.null();
+    assert.that(interfaces.local.server).is.not.falsy();
     assert.that(interfaces.external).is.undefined();
 
     await new Promise((resolve) => {
@@ -148,15 +141,14 @@ suite('create', () => {
 
   test('creates only one server if host is set to \'localhost\'', async () => {
     const app = express();
-
     const interfaces = await create({
       app,
       host: 'localhost',
       port: 3000
     });
 
-    assert.that(interfaces.local).is.not.null();
-    assert.that(interfaces.local.server).is.not.null();
+    assert.that(interfaces.local).is.not.falsy();
+    assert.that(interfaces.local.server).is.not.falsy();
     assert.that(interfaces.external).is.undefined();
 
     await new Promise((resolve) => {

@@ -5,6 +5,7 @@ const util = require('util');
 const assert = require('assertthat');
 const express = require('express');
 const freeport = util.promisify(require('freeport'));
+const nodeenv = require('nodeenv');
 const proxyquire = require('proxyquire');
 
 const externalIp = require('./externalIp');
@@ -88,6 +89,27 @@ suite('start', () => {
 
     await new Promise((resolve) => {
       interfaces.local.server.close(resolve);
+    });
+  });
+
+  suite('cloud', () => {
+    test('starts only external server for all network interfaces.', async () => {
+      const app = express();
+      const restore = nodeenv({
+        SERVICE_DISCOVERY: 'cloud',
+        TLS_UNPROTECTED: 'world'
+      });
+
+      const interfaces = await start({
+        app,
+        host: externalIp(),
+        port: 3000
+      });
+
+      assert.that(interfaces.local).is.undefined();
+      assert.that(interfaces.external).is.not.falsy();
+      await interfaces.external.server.close();
+      restore();
     });
   });
 });
