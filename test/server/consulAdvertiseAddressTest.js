@@ -1,26 +1,28 @@
 'use strict';
 
 const assert = require('assertthat');
+
+// const getenv = require('getenv');
 const { host } = require('docker-host')();
 const nodeenv = require('nodeenv');
 const proxyquire = require('proxyquire');
 
 const consulAdvertiseAddress = require('../../lib/server/consulAdvertiseAddress');
 
-let dataConsul,
-    errConsul;
+let dataConsul, errConsul;
 
 const consulAdvertiseAddressMock = proxyquire('../../lib/server/consulAdvertiseAddress', {
   '@sealsystems/consul': {
-    async initialize () {},
-    async getConfiguration () {
+    // eslint-disable-next-line no-empty-function
+    async initialize() {},
+    async getConfiguration() {
       if (errConsul) {
         throw errConsul;
       }
 
       return dataConsul;
     },
-    async getMember () {
+    async getMember() {
       if (errConsul) {
         throw errConsul;
       }
@@ -43,27 +45,38 @@ suite('consulAdvertiseAddress', () => {
   test('throws an error if Consul failed.', async () => {
     errConsul = new Error('foo');
 
-    await assert.that(async () => {
-      await consulAdvertiseAddressMock();
-    }).is.throwingAsync('foo');
+    await assert
+      .that(async () => {
+        await consulAdvertiseAddressMock();
+      })
+      .is.throwingAsync('foo');
   });
 
   test('throws an error if Consul does not provide a config.', async () => {
     dataConsul = null;
 
-    await assert.that(async () => {
-      await consulAdvertiseAddressMock();
-    }).is.throwingAsync('Invalid information from Consul received.');
+    await assert
+      .that(async () => {
+        await consulAdvertiseAddressMock();
+      })
+      .is.throwingAsync('Invalid information from Consul received.');
   });
 
   test('throws an error if Consul does not provide a advertise address.', async () => {
     dataConsul = { foo: 'bar' };
 
-    await assert.that(async () => {
-      await consulAdvertiseAddressMock();
-    }).is.throwingAsync('Invalid information from Consul received.');
+    await assert
+      .that(async () => {
+        await consulAdvertiseAddressMock();
+      })
+      .is.throwingAsync('Invalid information from Consul received.');
   });
 
+  // the test case can only run in CircleCI or Appveyor, not locally
+  // because it requires a consul to be started
+  // console.log('CIRCLECI', getenv('CIRCLECI', false));
+  // console.log('APPVEYOR', getenv('APPVEYOR', false));
+  // if (getenv('CIRCLECI', false) || getenv('APPVEYOR', false)) {
   test('queries the advertised address from Consul.', async () => {
     const restore = nodeenv('CONSUL_URL', `http://${host}:8500`);
     const address = await consulAdvertiseAddress();
@@ -72,4 +85,5 @@ suite('consulAdvertiseAddress', () => {
 
     restore();
   });
+  // }
 });

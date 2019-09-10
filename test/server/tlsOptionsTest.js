@@ -9,14 +9,14 @@ const tlsOptions = require('../../lib/server/tlsOptions');
 
 const tlsOptionsMockNoCA = proxyquire('../../lib/server/tlsOptions', {
   '@sealsystems/tlscert': {
-    async get () {
+    async get() {
       return {};
     }
   }
 });
 const tlsOptionsMockWithCA = proxyquire('../../lib/server/tlsOptions', {
   '@sealsystems/tlscert': {
-    async get () {
+    async get() {
       return { ca: 'foo' };
     }
   }

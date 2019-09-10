@@ -14,7 +14,7 @@ const start = require('../lib/start');
 let errCreate;
 
 const startMock = proxyquire('../lib/start', {
-  async './server/create' () {
+  async './server/create'() {
     if (errCreate) {
       throw errCreate;
     }
@@ -31,15 +31,19 @@ suite('start', () => {
   });
 
   test('throws an error if express app is missing.', async () => {
-    await assert.that(async () => {
-      await start({ host: 'foo', port: 1234 });
-    }).is.throwingAsync('Express app is missing.');
+    await assert
+      .that(async () => {
+        await start({ host: 'foo', port: 1234 });
+      })
+      .is.throwingAsync('Express app is missing.');
   });
 
   test('throws an error if port is missing.', async () => {
-    await assert.that(async () => {
-      await start({ app: {}, host: 'foo' });
-    }).is.throwingAsync('Port is missing.');
+    await assert
+      .that(async () => {
+        await start({ app: {}, host: 'foo' });
+      })
+      .is.throwingAsync('Port is missing.');
   });
 
   test('throws an error if creation of server failed.', async () => {
@@ -47,9 +51,11 @@ suite('start', () => {
 
     errCreate = new Error('foo');
 
-    await assert.that(async () => {
-      await startMock({ app, host: externalIp(), port: await freeport() });
-    }).is.throwingAsync('foo');
+    await assert
+      .that(async () => {
+        await startMock({ app, host: externalIp(), port: await freeport() });
+      })
+      .is.throwingAsync('foo');
   });
 
   test('starts servers for local and external connections by default.', async () => {
@@ -66,7 +72,7 @@ suite('start', () => {
     ]);
   });
 
-  test('starts only one server if host is set to \'127.0.0.1\'', async () => {
+  test("starts only one server if host is set to '127.0.0.1'", async () => {
     const app = express();
 
     const interfaces = await start({ app, host: '127.0.0.1', port: await freeport() });
@@ -79,7 +85,7 @@ suite('start', () => {
     });
   });
 
-  test('starts only one server if host is set to \'localhost\'', async () => {
+  test("starts only one server if host is set to 'localhost'", async () => {
     const app = express();
 
     const interfaces = await start({ app, host: 'localhost', port: await freeport() });

@@ -13,7 +13,7 @@ const externalIp = require('../externalIp');
 let errExternalAddress;
 
 const create = proxyquire('../../lib/server/create', {
-  async './externalAddress' (host) {
+  async './externalAddress'(host) {
     if (errExternalAddress) {
       throw errExternalAddress;
     }
@@ -36,24 +36,30 @@ suite('create', () => {
   });
 
   test('throws an error if options are missing.', async () => {
-    await assert.that(async () => {
-      await create();
-    }).is.throwingAsync('Options are missing.');
+    await assert
+      .that(async () => {
+        await create();
+      })
+      .is.throwingAsync('Options are missing.');
   });
 
   test('throws an error if express app is missing.', async () => {
-    await assert.that(async () => {
-      await create({ host: 'foo' });
-    }).is.throwingAsync('Express app is missing.');
+    await assert
+      .that(async () => {
+        await create({ host: 'foo' });
+      })
+      .is.throwingAsync('Express app is missing.');
   });
 
   test('throws an error if TLS_UNPROTECTED is invalid.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'foo');
     const app = express();
 
-    await assert.that(async () => {
-      await create({ app, port: 3000 });
-    }).is.throwingAsync('TLS_UNPROTECTED invalid.');
+    await assert
+      .that(async () => {
+        await create({ app, port: 3000 });
+      })
+      .is.throwingAsync('TLS_UNPROTECTED invalid.');
 
     restore();
   });
@@ -63,9 +69,11 @@ suite('create', () => {
 
     const app = express();
 
-    await assert.that(async () => {
-      await create({ app, port: 3000 });
-    }).is.throwingAsync('foo');
+    await assert
+      .that(async () => {
+        await create({ app, port: 3000 });
+      })
+      .is.throwingAsync('foo');
   });
 
   test('creates only http servers if TLS_UNPROTECTED=world.', async () => {
@@ -122,7 +130,7 @@ suite('create', () => {
     restore();
   });
 
-  test('creates only one server if host is set to \'127.0.0.1\'', async () => {
+  test("creates only one server if host is set to '127.0.0.1'", async () => {
     const app = express();
     const interfaces = await create({
       app,
@@ -139,7 +147,7 @@ suite('create', () => {
     });
   });
 
-  test('creates only one server if host is set to \'localhost\'', async () => {
+  test("creates only one server if host is set to 'localhost'", async () => {
     const app = express();
     const interfaces = await create({
       app,
