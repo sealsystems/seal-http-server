@@ -3,8 +3,8 @@
 const assert = require('assertthat');
 
 // const getenv = require('getenv');
-const { host } = require('docker-host')();
-const nodeenv = require('nodeenv');
+// const { host } = require('docker-host')();
+// const nodeenv = require('nodeenv');
 const proxyquire = require('proxyquire');
 
 const consulAdvertiseAddress = require('../../lib/server/consulAdvertiseAddress');
@@ -77,13 +77,13 @@ suite('consulAdvertiseAddress', () => {
   // console.log('CIRCLECI', getenv('CIRCLECI', false));
   // console.log('APPVEYOR', getenv('APPVEYOR', false));
   // if (getenv('CIRCLECI', false) || getenv('APPVEYOR', false)) {
-  test('queries the advertised address from Consul.', async () => {
-    const restore = nodeenv('CONSUL_URL', `http://${host}:8500`);
-    const address = await consulAdvertiseAddress();
+  // test('queries the advertised address from Consul.', async () => {
+  //   const restore = nodeenv('CONSUL_URL', `http://${host}:8500`);
+  //   const address = await consulAdvertiseAddress();
 
-    assert.that(address).is.matching(/\d+\.\d+\.\d+\.\d+/);
+  //   assert.that(address).is.matching(/\d+\.\d+\.\d+\.\d+/);
 
-    restore();
-  });
+  //   restore();
+  // });
   // }
 });
