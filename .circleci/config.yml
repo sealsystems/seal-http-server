@@ -21,7 +21,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: &restore-cache
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}-{{ checksum ".circleci/config.yml" }}
       - run: &install-dependencies
           name: Install dependencies
           command: |
@@ -30,7 +30,7 @@ jobs:
               npm install --no-save @sealsystems/semantic-release-config semantic-release
             fi
       - save_cache: &save-cache
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}-{{ checksum ".circleci/config.yml" }}
           paths:
             - ./node_modules
       - run:
