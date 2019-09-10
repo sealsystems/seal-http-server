@@ -31,7 +31,6 @@ install:
 
       Restart-Service consul
 
-  - npm install -g roboter-cli
   - npm install
 
 build: off

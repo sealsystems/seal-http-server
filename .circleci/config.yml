@@ -27,7 +27,7 @@ jobs:
           command: |
             if [ ! -d ./node_modules ]; then
               npm install
-              npm install --no-save @sealsystems/semantic-release-config roboter-cli semantic-release
+              npm install --no-save @sealsystems/semantic-release-config semantic-release
             fi
       - save_cache: &save-cache
           key: dependency-cache-{{ checksum "package.json" }}
