@@ -10,15 +10,19 @@ suite('shutdown', () => {
   });
 
   test('throws an error if servers are missing.', async () => {
-    await assert.that(async () => {
-      await shutdown();
-    }).is.throwingAsync('Servers are missing.');
+    await assert
+      .that(async () => {
+        await shutdown();
+      })
+      .is.throwingAsync('Servers are missing.');
   });
 
   test('handles empty server list correctly.', async () => {
-    await assert.that(async () => {
-      await shutdown({});
-    }).is.not.throwingAsync();
+    await assert
+      .that(async () => {
+        await shutdown({});
+      })
+      .is.not.throwingAsync();
   });
 
   test('calls the close function of each server.', async () => {
@@ -26,13 +30,13 @@ suite('shutdown', () => {
 
     const servers = {
       local: {
-        close (callback) {
+        close(callback) {
           closeCallCount++;
           callback(null);
         }
       },
       external: {
-        close (callback) {
+        close(callback) {
           closeCallCount++;
           callback(null);
         }

@@ -8,18 +8,17 @@ const servers = {
   local: 'bar'
 };
 
-let errShutdown,
-    errStart;
+let errShutdown, errStart;
 
 const httpServer = proxyquire('../lib/httpServer', {
-  async './shutdown' (runningServers) {
+  async './shutdown'(runningServers) {
     assert.that(runningServers).is.equalTo(servers);
 
     if (errShutdown) {
       throw errShutdown;
     }
   },
-  async './start' () {
+  async './start'() {
     if (errStart) {
       throw errStart;
     }
@@ -44,23 +43,29 @@ suite('httpServer', () => {
     });
 
     test('throws an error if options are misssing.', async () => {
-      await assert.that(async () => {
-        await httpServer.start();
-      }).is.throwingAsync('Options are missing.');
+      await assert
+        .that(async () => {
+          await httpServer.start();
+        })
+        .is.throwingAsync('Options are missing.');
     });
 
     test('does not throw an error.', async () => {
-      await assert.that(async () => {
-        await httpServer.start({});
-      }).is.not.throwingAsync();
+      await assert
+        .that(async () => {
+          await httpServer.start({});
+        })
+        .is.not.throwingAsync();
     });
 
     test('throws an error if starting the servers failed.', async () => {
       errStart = new Error('foo');
 
-      await assert.that(async () => {
-        await httpServer.start({});
-      }).is.throwingAsync('foo');
+      await assert
+        .that(async () => {
+          await httpServer.start({});
+        })
+        .is.throwingAsync('foo');
     });
   });
 
@@ -70,17 +75,21 @@ suite('httpServer', () => {
     });
 
     test('does not throw an error.', async () => {
-      await assert.that(async () => {
-        await httpServer.shutdown({});
-      }).is.not.throwingAsync();
+      await assert
+        .that(async () => {
+          await httpServer.shutdown({});
+        })
+        .is.not.throwingAsync();
     });
 
     test('returns an error if shutting down the servers failed.', async () => {
       errShutdown = new Error('foo');
 
-      await assert.that(async () => {
-        await httpServer.shutdown({});
-      }).is.throwingAsync('foo');
+      await assert
+        .that(async () => {
+          await httpServer.shutdown({});
+        })
+        .is.throwingAsync('foo');
     });
   });
 });

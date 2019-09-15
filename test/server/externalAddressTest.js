@@ -4,7 +4,7 @@ const assert = require('assertthat');
 const proxyquire = require('proxyquire');
 
 const externalAddress = proxyquire('../../lib/server/externalAddress', {
-  async './consulAdvertiseAddress' () {
+  async './consulAdvertiseAddress'() {
     return 'bar';
   }
 });
