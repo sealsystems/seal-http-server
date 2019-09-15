@@ -1,0 +1,72 @@
+name: Integration Test
+
+on: [push]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+
+    - name: Install docker-compose
+      run: |
+        sudo rm /usr/local/bin/docker-compose || echo "Could not remove docker-compose binary."
+        curl -L https://github.com/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m` > docker-compose
+        chmod +x docker-compose
+        sudo mv docker-compose /usr/local/bin
+
+    - name: Docker login
+      env:
+        DOCKERHUB_CREDENTIALS: ${{ secrets.DOCKERHUB_CREDENTIALS }}
+      run: docker login -u ${DOCKERHUB_CREDENTIALS%%:*} -p ${DOCKERHUB_CREDENTIALS#*:}
+
+    - name: Print versions
+      run: |
+        docker version
+        docker-compose --version
+        node --version
+        ruby --version
+
+#    - name: Patch docker-compose-ci.yml to use the correct images
+#      run: |
+#        if [[ ${CIRCLE_BRANCH} =~ ^[0-9.]+.x$ ]]; then
+#          echo "Using Docker images with tag '${CIRCLE_BRANCH-unstable}'"
+#          sed -i "s/:unstable$/:${CIRCLE_BRANCH}-unstable/g" docker-compose-ci.yml notifier/Dockerfile
+#          exit 0
+#        fi
+#        echo "Not on bugfix release branch. Nothing to do."
+
+    - name: Pull and build Docker images
+      env:
+        JFROG_CREDENTIALS: ${{ secrets.JFROG_CREDENTIALS }}
+      run: |
+        docker-compose -f docker-compose-ci.yml pull
+        docker-compose -f docker-compose-ci.yml build
+
+    - name: Show versions of Docker images
+      run: |
+        echo "Printing version of pulled images..."
+        docker image inspect $(docker images -q) | jq -r '.[].Config.Labels | ."org.opencontainers.image.title" + " " + ."org.opencontainers.image.version"' | grep 'plossys/'| sort
+    - name: Install Cucumber
+      run: bundle install
+
+    - name: Run tests
+      env:
+        CI: 1
+        CI_NODE_TOTAL: 10
+        CI_NODE_INDEX: ${{ matrix.nodeIndex }}
+        ONERROR: ignore
+        TIMEOUT: 300
+      run: |
+          echo "Running tests on ${CI_NODE_TOTAL} nodes in parallel..."
+          bundle exec rake "knapsack:cucumber[--strict --tags 'not @ignore' --tags 'not @no-ci']"
+    strategy:
+      matrix:
+        nodeIndex: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
