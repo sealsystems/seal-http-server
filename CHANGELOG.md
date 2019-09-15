@@ -1,3 +1,23 @@
+## 3.2.0 (2019-09-15)
+
+### Features
+
+
+#### PLS-431 ([21a611b](https://github.com/sealsystems/node-http-server/commit/21a611b))
+
+- Removed roboter
+ - Updated scripts
+ - Installed latest development stack
+ - Updated CircleCI-config and CircleCI-cache-key
+ - Updated dependencies
+ - Added package-lock.json to git
+ - Merged with master
+ - Updated github pull request template
+ - Added dependabot
+
+
+---
+
 ## 3.1.2 (2018-12-03)
 
 ### Bug Fixes
