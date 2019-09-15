@@ -23,14 +23,14 @@
   "dependencies": {
     "@sealsystems/consul": "4.0.1",
     "@sealsystems/log": "2.0.26",
-    "@sealsystems/mocha": "3.0.15",
-    "@sealsystems/semantic-release": "4.0.12",
     "@sealsystems/tlscert": "2.1.2",
     "getenv": "0.7.0",
     "lodash": "4.17.15"
   },
   "devDependencies": {
     "@sealsystems/eslint-config-es": "3.5.1",
+    "@sealsystems/mocha": "3.0.15",
+    "@sealsystems/semantic-release": "4.0.12",
     "assertthat": "3.3.0",
     "docker-host": "3.1.0",
     "express": "4.17.1",
