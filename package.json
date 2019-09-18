@@ -22,7 +22,7 @@
   "main": "lib/httpServer.js",
   "dependencies": {
     "@sealsystems/consul": "4.0.1",
-    "@sealsystems/log": "2.0.26",
+    "@sealsystems/log": "2.1.0",
     "@sealsystems/tlscert": "2.1.2",
     "getenv": "0.7.0",
     "lodash": "4.17.15"
