@@ -1,6 +1,6 @@
 {
   "name": "@sealsystems/http-server",
-  "version": "3.1.2",
+  "version": "3.2.1",
   "description": "@sealsystems/http-server serves an Express app. It accepts local HTTP connections and HTTPS-encrypted connections from any given external interface.",
   "author": {
     "name": "SEAL Systems AG",
@@ -22,14 +22,14 @@
   "main": "lib/httpServer.js",
   "dependencies": {
     "@sealsystems/consul": "4.0.1",
-    "@sealsystems/log": "2.0.26",
+    "@sealsystems/log": "2.1.0",
     "@sealsystems/tlscert": "2.1.2",
     "getenv": "0.7.0",
     "lodash": "4.17.15"
   },
   "devDependencies": {
-    "@sealsystems/eslint-config-es": "3.5.1",
-    "@sealsystems/mocha": "3.0.15",
+    "@sealsystems/eslint-config-es": "3.5.3",
+    "@sealsystems/mocha": "4.1.1",
     "@sealsystems/semantic-release": "4.0.12",
     "assertthat": "3.3.0",
     "docker-host": "3.1.0",
