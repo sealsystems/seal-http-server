@@ -1,3 +1,17 @@
+## 3.2.1 (2019-09-18)
+
+### Chores
+
+
+#### bump [@sealsystems](https://github.com/sealsystems)/log from 2.0.26 to 2.1.0 ([259bc25](https://github.com/sealsystems/node-http-server/commit/259bc25))
+
+Bumps @sealsystems/log from 2.0.26 to 2.1.0.
+
+Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+
+
+---
+
 ## 3.2.0 (2019-09-15)
 
 ### Features
