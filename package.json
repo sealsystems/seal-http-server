@@ -21,9 +21,9 @@
   },
   "main": "lib/httpServer.js",
   "dependencies": {
-    "@sealsystems/consul": "4.0.1",
+    "@sealsystems/consul": "git+https://git@github.com/sealsystems/node-consul.git#PLS-431",
     "@sealsystems/log": "2.1.0",
-    "@sealsystems/tlscert": "git+https://b190bb194b54549c14c9b4b219bcdead6d1ea9ab:x-oauth-basic@github.com/sealsystems/node-tlscert.git#PLS-431",
+    "@sealsystems/tlscert": "git+https://git@github.com/sealsystems/node-tlscert.git#PLS-431",
     "getenv": "0.7.0",
     "lodash": "4.17.15"
   },
