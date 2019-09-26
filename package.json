@@ -23,7 +23,7 @@
   "dependencies": {
     "@sealsystems/consul": "git+https://git@github.com/sealsystems/node-consul.git#PLS-431",
     "@sealsystems/log": "2.1.0",
-    "@sealsystems/tlscert": "git+https://git@github.com/sealsystems/node-tlscert.git#PLS-431",
+    "@sealsystems/tlscert": "2.2.0",
     "getenv": "0.7.0",
     "lodash": "4.17.15"
   },
