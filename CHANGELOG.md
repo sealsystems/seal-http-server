@@ -1,3 +1,31 @@
+## 3.2.3 (2019-09-27)
+
+### Chores
+
+
+#### bump [@sealsystems](https://github.com/sealsystems)/consul from 4.0.1 to 4.1.0 ([a3fe4f8](https://github.com/sealsystems/node-http-server/commit/a3fe4f8))
+
+Bumps @sealsystems/consul from 4.0.1 to 4.1.0.
+
+Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+
+
+---
+
+## 3.2.2 (2019-09-25)
+
+### Chores
+
+
+#### bump [@sealsystems](https://github.com/sealsystems)/tlscert from 2.1.2 to 2.2.0 ([e55905f](https://github.com/sealsystems/node-http-server/commit/e55905f))
+
+Bumps @sealsystems/tlscert from 2.1.2 to 2.2.0.
+
+Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+
+
+---
+
 ## 3.2.1 (2019-09-18)
 
 ### Chores
