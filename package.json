@@ -7,7 +7,7 @@
     "email": "opensource@sealsystems.de",
     "url": "https://www.sealsystems.de"
   },
-  "license": "MIT",
+  "license": "SEAL End User License",
   "scripts": {
     "bot": "bot",
     "lint": "lint",
@@ -42,9 +42,10 @@
     "url": "https://github.com/sealsystems/node-http-server.git"
   },
   "release": {
-    "extends": "@sealsystems/semantic-release-config/node-module"
+    "extends": "@sealsystems/semantic-release/node-module"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "http://plossys.jfrog.io/plossys/api/npm/npm-local"
   }
 }
