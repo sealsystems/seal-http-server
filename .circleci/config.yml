@@ -1,27 +1,23 @@
 ################################################################################
-# STANDARD MODULE
+# OPEN SOURCE MODULE
 # Remove the comment if you changed the build scripts!
-# Used for distributing the build configuration via Plossys/scripts/ci/copy-circleci-config.sh
 ################################################################################
 
 version: 2
 
 x-environment: &environment
-  CONSUL_VERSION: 0.7.5
-  ENVCONSUL_VERSION: 0.6.2
   GIT_AUTHOR_EMAIL: com.git@sealsystems.de
   GIT_AUTHOR_NAME: CircleCI Build
   GIT_COMMITTER_EMAIL: com.git@sealsystems.de
   GIT_COMMITTER_NAME: CircleCI Build
   LOG_LEVELS: fatal
-  NODE_VERSION: 8.9.4
   TLS_UNPROTECTED: world
 
 jobs:
   test:
     docker:
       - image: circleci/node:8.9.4
-      - image: mongo:3.2.9
+      - image: circleci/mongo:3
       - image: consul:0.7.5
 
     environment:
@@ -29,12 +25,6 @@ jobs:
 
     steps:
       - checkout
-      - run: &configure-node-js
-          name: Configure Node.js
-          command: |
-            curl -k -u "${JFROG_CREDENTIALS}" "https://plossys.jfrog.io/plossys/api/npm/auth" > ~/.npmrc
-            npm config set registry http://plossys.jfrog.io/plossys/api/npm/npm-repo
-            node --version
       - restore_cache: &restore-cache
           key: dependency-cache-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}-{{ checksum ".circleci/config.yml" }}
       - run: &install-dependencies
@@ -66,8 +56,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          <<: *configure-node-js
       - restore_cache:
           <<: *restore-cache
       - run:

@@ -7,7 +7,7 @@
     "email": "opensource@sealsystems.de",
     "url": "https://www.sealsystems.de"
   },
-  "license": "SEAL End User License",
+  "license": "MIT",
   "scripts": {
     "bot": "bot",
     "lint": "lint",
