@@ -1,3 +1,17 @@
+## 3.2.4 (2019-10-08)
+
+### Chores
+
+
+#### bump [@sealsystems](https://github.com/sealsystems)/log from 2.1.0 to 2.2.0 ([fc2f108](https://github.com/sealsystems/node-http-server/commit/fc2f108))
+
+Bumps @sealsystems/log from 2.1.0 to 2.2.0.
+
+Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+
+
+---
+
 ## 3.2.3 (2019-09-27)
 
 ### Chores
