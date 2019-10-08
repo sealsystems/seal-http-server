@@ -23,7 +23,7 @@
   "dependencies": {
     "@sealsystems/consul": "4.1.0",
     "@sealsystems/log": "2.2.0",
-    "@sealsystems/tlscert": "2.2.0",
+    "@sealsystems/tlscert": "2.2.1",
     "getenv": "0.7.0",
     "lodash": "4.17.15"
   },
