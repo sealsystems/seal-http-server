@@ -24,7 +24,7 @@
     "@sealsystems/consul": "5.1.0",
     "@sealsystems/log": "2.2.0",
     "@sealsystems/tlscert": "2.3.0",
-    "getenv": "0.7.0",
+    "getenv": "1.0.0",
     "lodash": "4.17.15"
   },
   "devDependencies": {
