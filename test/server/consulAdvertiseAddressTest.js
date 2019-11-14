@@ -2,35 +2,28 @@
 
 const assert = require('assertthat');
 
-// const getenv = require('getenv');
-// const { host } = require('docker-host')();
-// const nodeenv = require('nodeenv');
-const proxyquire = require('proxyquire');
-
 const consulAdvertiseAddress = require('../../lib/server/consulAdvertiseAddress');
 
 let dataConsul, errConsul;
 
-const consulAdvertiseAddressMock = proxyquire('../../lib/server/consulAdvertiseAddress', {
-  '@sealsystems/consul': {
-    // eslint-disable-next-line no-empty-function
-    async initialize() {},
-    async getConfiguration() {
-      if (errConsul) {
-        throw errConsul;
-      }
-
-      return dataConsul;
-    },
-    async getMember() {
-      if (errConsul) {
-        throw errConsul;
-      }
-
-      return dataConsul;
+const consul = {
+  // eslint-disable-next-line no-empty-function
+  async initialize() {},
+  async getConfiguration() {
+    if (errConsul) {
+      throw errConsul;
     }
+
+    return dataConsul;
+  },
+  async getMember() {
+    if (errConsul) {
+      throw errConsul;
+    }
+
+    return dataConsul;
   }
-});
+};
 
 suite('consulAdvertiseAddress', () => {
   setup(async () => {
@@ -42,12 +35,20 @@ suite('consulAdvertiseAddress', () => {
     assert.that(consulAdvertiseAddress).is.ofType('function');
   });
 
+  test('throws an error if Consul is missing.', async () => {
+    await assert
+      .that(async () => {
+        await consulAdvertiseAddress();
+      })
+      .is.throwingAsync('Consul is missing.');
+  });
+
   test('throws an error if Consul failed.', async () => {
     errConsul = new Error('foo');
 
     await assert
       .that(async () => {
-        await consulAdvertiseAddressMock();
+        await consulAdvertiseAddress(consul);
       })
       .is.throwingAsync('foo');
   });
@@ -57,7 +58,7 @@ suite('consulAdvertiseAddress', () => {
 
     await assert
       .that(async () => {
-        await consulAdvertiseAddressMock();
+        await consulAdvertiseAddress(consul);
       })
       .is.throwingAsync('Invalid information from Consul received.');
   });
@@ -67,23 +68,8 @@ suite('consulAdvertiseAddress', () => {
 
     await assert
       .that(async () => {
-        await consulAdvertiseAddressMock();
+        await consulAdvertiseAddress(consul);
       })
       .is.throwingAsync('Invalid information from Consul received.');
   });
-
-  // the test case can only run in CircleCI or Appveyor, not locally
-  // because it requires a consul to be started
-  // console.log('CIRCLECI', getenv('CIRCLECI', false));
-  // console.log('APPVEYOR', getenv('APPVEYOR', false));
-  // if (getenv('CIRCLECI', false) || getenv('APPVEYOR', false)) {
-  // test('queries the advertised address from Consul.', async () => {
-  //   const restore = nodeenv('CONSUL_URL', `http://${host}:8500`);
-  //   const address = await consulAdvertiseAddress();
-
-  //   assert.that(address).is.matching(/\d+\.\d+\.\d+\.\d+/);
-
-  //   restore();
-  // });
-  // }
 });
