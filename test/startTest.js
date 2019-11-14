@@ -14,7 +14,8 @@ const start = require('../lib/start');
 let errCreate;
 
 const startMock = proxyquire('../lib/start', {
-  async './server/create'() {
+  async './server/create'(options) {
+    assert.that(options.consul).is.not.falsy();
     if (errCreate) {
       throw errCreate;
     }
@@ -46,6 +47,14 @@ suite('start', () => {
       .is.throwingAsync('Port is missing.');
   });
 
+  test('throws an error if consul is missing.', async () => {
+    await assert
+      .that(async () => {
+        await start({ app: {}, host: 'foo', port: 1234 });
+      })
+      .is.throwingAsync('Consul is missing.');
+  });
+
   test('throws an error if creation of server failed.', async () => {
     const app = express();
 
@@ -53,7 +62,7 @@ suite('start', () => {
 
     await assert
       .that(async () => {
-        await startMock({ app, host: externalIp(), port: await freeport() });
+        await startMock({ app, host: externalIp(), port: await freeport(), consul: {} });
       })
       .is.throwingAsync('foo');
   });
@@ -61,7 +70,7 @@ suite('start', () => {
   test('starts servers for local and external connections by default.', async () => {
     const app = express();
 
-    const interfaces = await start({ app, host: externalIp(), port: await freeport() });
+    const interfaces = await start({ app, host: externalIp(), port: await freeport(), consul: {} });
 
     assert.that(interfaces.local).is.not.undefined();
     assert.that(interfaces.external).is.not.undefined();
@@ -75,7 +84,7 @@ suite('start', () => {
   test("starts only one server if host is set to '127.0.0.1'", async () => {
     const app = express();
 
-    const interfaces = await start({ app, host: '127.0.0.1', port: await freeport() });
+    const interfaces = await start({ app, host: '127.0.0.1', port: await freeport(), consul: {} });
 
     assert.that(interfaces.local).is.not.null();
     assert.that(interfaces.external).is.undefined();
@@ -88,7 +97,7 @@ suite('start', () => {
   test("starts only one server if host is set to 'localhost'", async () => {
     const app = express();
 
-    const interfaces = await start({ app, host: 'localhost', port: await freeport() });
+    const interfaces = await start({ app, host: 'localhost', port: await freeport(), consul: {} });
 
     assert.that(interfaces.local).is.not.null();
     assert.that(interfaces.external).is.undefined();
@@ -109,7 +118,8 @@ suite('start', () => {
       const interfaces = await start({
         app,
         host: externalIp(),
-        port: 3000
+        port: 3000,
+        consul: {}
       });
 
       assert.that(interfaces.local).is.undefined();

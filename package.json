@@ -21,17 +21,15 @@
   },
   "main": "lib/httpServer.js",
   "dependencies": {
-    "@sealsystems/consul": "5.1.0",
     "@sealsystems/log": "2.2.0",
     "@sealsystems/tlscert": "2.3.0",
-    "getenv": "0.7.0",
+    "getenv": "1.0.0",
     "lodash": "4.17.15"
   },
   "devDependencies": {
     "@sealsystems/eslint-config-es": "3.6.0",
     "@sealsystems/mocha": "4.1.1",
     "@sealsystems/semantic-release": "4.0.13",
-    "docker-host": "3.1.0",
     "express": "4.17.1",
     "freeport": "1.0.5",
     "nodeenv": "1.1.0",

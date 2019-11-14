@@ -13,7 +13,8 @@ const externalIp = require('../externalIp');
 let errExternalAddress;
 
 const create = proxyquire('../../lib/server/create', {
-  async './externalAddress'(host) {
+  async './externalAddress'(consul, host) {
+    assert.that(consul).is.not.falsy();
     if (errExternalAddress) {
       throw errExternalAddress;
     }
@@ -51,13 +52,21 @@ suite('create', () => {
       .is.throwingAsync('Express app is missing.');
   });
 
+  test('throws an error if Consul is missing.', async () => {
+    await assert
+      .that(async () => {
+        await create({ host: 'foo', app: {} });
+      })
+      .is.throwingAsync('Consul is missing.');
+  });
+
   test('throws an error if TLS_UNPROTECTED is invalid.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'foo');
     const app = express();
 
     await assert
       .that(async () => {
-        await create({ app, port: 3000 });
+        await create({ app, port: 3000, consul: {} });
       })
       .is.throwingAsync('TLS_UNPROTECTED invalid.');
 
@@ -71,7 +80,7 @@ suite('create', () => {
 
     await assert
       .that(async () => {
-        await create({ app, port: 3000 });
+        await create({ app, port: 3000, consul: {} });
       })
       .is.throwingAsync('foo');
   });
@@ -79,7 +88,7 @@ suite('create', () => {
   test('creates only http servers if TLS_UNPROTECTED=world.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'world');
     const app = express();
-    const interfaces = await create({ app, port: 3000 });
+    const interfaces = await create({ app, port: 3000, consul: {} });
 
     assert.that(interfaces.local).is.not.null();
     assert.that(interfaces.local.server).is.instanceOf(http.Server);
@@ -97,7 +106,7 @@ suite('create', () => {
   test('creates https and http servers if TLS_UNPROTECTED=loopback.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'loopback');
     const app = express();
-    const interfaces = await create({ app, port: 3000 });
+    const interfaces = await create({ app, port: 3000, consul: {} });
 
     assert.that(interfaces.local).is.not.null();
     assert.that(interfaces.local.server).is.instanceOf(http.Server);
@@ -115,7 +124,7 @@ suite('create', () => {
   test('creates only https servers if TLS_UNPROTECTED=none.', async () => {
     const restore = nodeenv('TLS_UNPROTECTED', 'none');
     const app = express();
-    const interfaces = await create({ app, port: 3000 });
+    const interfaces = await create({ app, port: 3000, consul: {} });
 
     assert.that(interfaces.local).is.not.null();
     assert.that(interfaces.local.server).is.instanceOf(https.Server);
@@ -135,7 +144,8 @@ suite('create', () => {
     const interfaces = await create({
       app,
       host: '127.0.0.1',
-      port: 3000
+      port: 3000,
+      consul: {}
     });
 
     assert.that(interfaces.local).is.not.null();
@@ -152,7 +162,8 @@ suite('create', () => {
     const interfaces = await create({
       app,
       host: 'localhost',
-      port: 3000
+      port: 3000,
+      consul: {}
     });
 
     assert.that(interfaces.local).is.not.falsy();
