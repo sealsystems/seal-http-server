@@ -1,3 +1,34 @@
+## 4.0.0 (2019-11-14)
+
+### Features
+
+
+#### Removed requires of consul, use options parameter ([7366ca4](https://github.com/sealsystems/node-http-server/commit/7366ca4))
+
+
+
+### BREAKING CHANGES
+
+#### Interface changed: consul is now part of options parameter.
+
+Example:
+
+```javascript
+const httpServer = require('@sealsystems/http-server');
+const consul = require('@sealsystems/consul');
+
+consul.connect(...);
+
+await httpServer.start({
+  app: myExpressApp,
+  host: '192.168.0.1',
+  port: '3000',
+  consul
+});
+```
+
+---
+
 ## 3.3.0 (2019-10-18)
 
 ### Features
