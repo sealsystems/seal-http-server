@@ -1,3 +1,14 @@
+## 4.0.1 (2020-03-09)
+
+### Chores
+
+
+#### yoed ([e567b0c](https://github.com/sealsystems/node-http-server/commit/e567b0c))
+
+
+
+---
+
 ## 4.0.0 (2019-11-14)
 
 ### Features
