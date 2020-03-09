@@ -23,7 +23,7 @@ const startMock = proxyquire('../lib/start', {
 });
 
 suite('start', () => {
-  setup(() => {
+  setup(async () => {
     errCreate = null;
   });
 
