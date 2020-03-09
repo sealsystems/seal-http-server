@@ -28,7 +28,7 @@ const httpServer = proxyquire('../lib/httpServer', {
 });
 
 suite('httpServer', () => {
-  setup(() => {
+  setup(async () => {
     errShutdown = null;
     errStart = null;
   });
