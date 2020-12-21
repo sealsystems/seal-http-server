@@ -1,3 +1,20 @@
+## 4.0.2 (2020-12-21)
+
+### Chores
+
+
+bump [@sealsystems](https://github.com/sealsystems)/log from 2.2.0 to 2.2.1 ([#43](https://github.com/sealsystems/node-http-server/issues/43)) ([411dc5a](https://github.com/sealsystems/node-http-server/commit/411dc5a))
+
+bump [@sealsystems](https://github.com/sealsystems)/log from 2.2.1 to 2.2.2 ([#60](https://github.com/sealsystems/node-http-server/issues/60)) ([123619e](https://github.com/sealsystems/node-http-server/commit/123619e))
+
+bump [@sealsystems](https://github.com/sealsystems)/log from 2.2.2 to 2.2.3 ([#82](https://github.com/sealsystems/node-http-server/issues/82)) ([ca45402](https://github.com/sealsystems/node-http-server/commit/ca45402))
+
+bump [@sealsystems](https://github.com/sealsystems)/tlscert from 2.3.0 to 2.3.7 ([#45](https://github.com/sealsystems/node-http-server/issues/45)) ([f251265](https://github.com/sealsystems/node-http-server/commit/f251265))
+
+bump [@sealsystems](https://github.com/sealsystems)/tlscert from 2.3.7 to 2.3.8 ([#62](https://github.com/sealsystems/node-http-server/issues/62)) ([c7857b6](https://github.com/sealsystems/node-http-server/commit/c7857b6))
+
+bump [@sealsystems](https://github.com/sealsystems)/tlscert from 2.3.8 to 2.3.9 ([#84](https://github.com/sealsystems/node-http-server/issues/84)) ([5807a4f](https://github.com/sealsystems/node-http-server/commit/5807a4f))
+
 ## 4.0.1 (2020-03-09)
 
 ### Chores
