@@ -1,3 +1,10 @@
+## 4.0.3 (2020-12-21)
+
+### Chores
+
+
+Trigger release ([044856c](https://github.com/sealsystems/node-http-server/commit/044856c))
+
 ## 4.0.2 (2020-12-21)
 
 ### Chores
