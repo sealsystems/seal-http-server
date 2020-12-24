@@ -24,7 +24,7 @@
     "@sealsystems/log": "2.2.3",
     "@sealsystems/tlscert": "2.3.9",
     "getenv": "1.0.0",
-    "lodash": "4.17.15"
+    "lodash": "4.17.20"
   },
   "devDependencies": {
     "@sealsystems/eslint-config-es": "3.6.5",
