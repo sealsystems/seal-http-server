@@ -1,3 +1,12 @@
+## 4.0.4 (2020-12-26)
+
+### Chores
+
+
+Update build configuration ([b3191f2](https://github.com/sealsystems/node-http-server/commit/b3191f2))
+
+Update build configuration ([800829f](https://github.com/sealsystems/node-http-server/commit/800829f))
+
 ## 4.0.3 (2020-12-21)
 
 ### Chores
