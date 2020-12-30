@@ -37,7 +37,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sealsystems/http-server"
+    "url": "https://github.com/sealsystems/node-http-server"
   },
   "release": {
     "extends": "@sealsystems/semantic-release/node-module"
