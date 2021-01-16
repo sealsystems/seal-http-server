@@ -1,3 +1,10 @@
+## 4.0.5 (2021-01-16)
+
+### Chores
+
+
+Update build config ([65c4d37](https://github.com/sealsystems/node-http-server/commit/65c4d37))
+
 ## 4.0.4 (2020-12-26)
 
 ### Chores
