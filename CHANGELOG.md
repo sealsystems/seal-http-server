@@ -1,3 +1,10 @@
+## 4.0.9 (2021-01-17)
+
+### Chores
+
+
+bump node-fetch from 2.6.0 to 2.6.1 ([149f80e](https://github.com/sealsystems/node-http-server/commit/149f80e))
+
 ## 4.0.8 (2021-01-17)
 
 ### Chores
