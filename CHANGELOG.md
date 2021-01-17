@@ -1,3 +1,10 @@
+## 4.0.7 (2021-01-17)
+
+### Chores
+
+
+bump [@sealsystems](https://github.com/sealsystems)/log from 2.2.3 to 2.2.5 ([#95](https://github.com/sealsystems/node-http-server/issues/95)) ([39fee52](https://github.com/sealsystems/node-http-server/commit/39fee52))
+
 ## 4.0.6 (2021-01-17)
 
 ### Chores
