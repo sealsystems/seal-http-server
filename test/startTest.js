@@ -5,7 +5,7 @@ const util = require('util');
 const assert = require('assertthat');
 const express = require('express');
 const freeport = util.promisify(require('freeport'));
-const nodeenv = require('nodeenv');
+const { nodeenv } = require('nodeenv');
 const proxyquire = require('proxyquire');
 
 const externalIp = require('./externalIp');

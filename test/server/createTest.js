@@ -5,7 +5,7 @@ const https = require('https');
 
 const assert = require('assertthat');
 const express = require('express');
-const nodeenv = require('nodeenv');
+const { nodeenv } = require('nodeenv');
 const proxyquire = require('proxyquire');
 
 const externalIp = require('../externalIp');

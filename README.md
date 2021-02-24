@@ -50,10 +50,11 @@ const options = {
 Finally, call the `start` function:
 
 ```javascript
-await httpServer.start(options);
-
+const serverList = await httpServer.start(options);
 console.log('Http server is listening', options);
 ```
+
+The return parameter `serverList` is an array, containing all started http servers.
 
 ### Shutting down the server
 

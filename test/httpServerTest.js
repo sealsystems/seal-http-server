@@ -4,8 +4,8 @@ const assert = require('assertthat');
 const proxyquire = require('proxyquire');
 
 const servers = {
-  external: 'foo',
-  local: 'bar'
+  external: { server: 'foo' },
+  local: { server: 'bar' }
 };
 
 let errShutdown, errStart;
@@ -50,12 +50,10 @@ suite('httpServer', () => {
         .is.throwingAsync('Options are missing.');
     });
 
-    test('does not throw an error.', async () => {
-      await assert
-        .that(async () => {
-          await httpServer.start({});
-        })
-        .is.not.throwingAsync();
+    test('returns a list of started servers.', async () => {
+      const serverList = await httpServer.start({});
+      assert.that(serverList).is.ofType('array');
+      assert.that(serverList).is.equalTo(['foo', 'bar']);
     });
 
     test('throws an error if starting the servers failed.', async () => {
