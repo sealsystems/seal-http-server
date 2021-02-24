@@ -1,3 +1,10 @@
+## 4.1.0 (2021-02-24)
+
+### Features
+
+
+returns started http servers ([f3e55f2](https://github.com/sealsystems/node-http-server/commit/f3e55f2))
+
 ## 4.0.10 (2021-01-17)
 
 ### Chores
