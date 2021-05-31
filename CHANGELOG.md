@@ -1,3 +1,10 @@
+## 4.1.8 (2021-05-31)
+
+### Chores
+
+
+bump [@sealsystems](https://github.com/sealsystems)/tlscert from 2.3.19 to 2.3.20 ([#135](https://github.com/sealsystems/node-http-server/issues/135)) ([bfff2c7](https://github.com/sealsystems/node-http-server/commit/bfff2c7))
+
 ## 4.1.7 (2021-05-31)
 
 ### Chores
